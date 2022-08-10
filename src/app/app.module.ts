@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { MarketDataComponent } from './components/market-data/market-data.component';
 import { SharedModule } from './shared/shared.service';
 import { HistoricalComponent } from './components/historical/historical.component';
+import { PageLayoutComponent } from './layouts/page-layout/page-layout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MarketDataComponent,
-    HistoricalComponent
+    HistoricalComponent,
+    PageLayoutComponent
   ],
   imports: [
     BrowserModule,
