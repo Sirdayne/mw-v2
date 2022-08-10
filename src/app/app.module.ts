@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MarketDataComponent } from './components/market-data/market-data.component';
 import { SharedModule } from './shared/shared.service';
+import { HistoricalComponent } from './components/historical/historical.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MarketDataComponent
+    MarketDataComponent,
+    HistoricalComponent
   ],
   imports: [
     BrowserModule,
