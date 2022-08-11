@@ -8,12 +8,17 @@
     </div>
   </div>
   <div>
-    <div class="main-navigation">
-      <div class="main-link">
-        <a href="https://aix.kz">AIX</a>
+    <div class="main-navigation-wrap">
+      <div class="main-navigation">
+        <div class="main-link">
+          <a href="https://aix.kz">AIX</a>
+        </div>
+        <div *ngFor="let nav of navLinks" class="main-link">
+          <a [routerLink]="nav.url">{{ nav.name }}</a>
+        </div>
       </div>
-      <div *ngFor="let nav of navLinks" class="main-link">
-        <a [routerLink]="nav.url">{{ nav.name }}</a>
+      <div class="main-navigation-active">
+        {{ activeLink }}
       </div>
     </div>
   </div>

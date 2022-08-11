@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-page-layout',
@@ -19,9 +20,16 @@ export class PageLayoutComponent implements OnInit {
     }
   ]
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
+  get activeLink() {
+    const url = this.router.url;
+    if (url === '/historical') {
+      return 'Historical Data'
+    }
+    return 'Market Data'
+  }
 }
