@@ -1,5 +1,5 @@
 $primary-color: #002659;
-$gold-color: #bb9a6b;
+$gold-color: #b7924b;
 
 body {
   background: #f1f3f6;
@@ -95,8 +95,8 @@ body {
 
 .market-state {
   margin: 0 0 20px;
-  padding: 0 0 10px 0;
+  padding: 20px;
   color: $gold-color;
   font-size: 19px;
-  border-bottom: 1px solid;
+  background: #fff;
 }
