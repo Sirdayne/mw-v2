@@ -3,7 +3,7 @@ $gold-color: #bb9a6b;
 
 body {
   background: #f1f3f6;
-  font-family: Roboto,sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .header {
@@ -37,7 +37,7 @@ body {
   align-items: center;
   background: url('../assets/images/aix-background.png');
   background-size: cover;
-  padding: 20px 15px;
+  padding: 20px 6px;
   box-sizing: border-box;
 }
 
@@ -58,4 +58,34 @@ body {
   a {
    color: #fff;
   }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.loading-shade {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.06);
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.market-state {
+  margin: 0 0 20px;
+  padding: 0 0 10px 0;
+  color: $gold-color;
+  font-size: 19px;
+  border-bottom: 1px solid;
 }

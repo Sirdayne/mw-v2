@@ -1,7 +1,119 @@
-<div fxLayout="row" class="mt-2 ml-6" fxLayoutAlign="end center">
-  <div>{{ title }}</div>
-  <div class="mt-2 ml-6">{{ title }}</div>
-  <div class="mt-2 ml-6">{{ title }}</div>
+<div>
+  <div class="market-state">
+    <div>Market state: {{ summary.marketState }}</div>
+    <div>Market volume: {{ summary.volume }}, Number of trades: {{ summary.numberOfTrades }}</div>
+  </div>
+
+  <div *ngIf="loading"
+       class="loader">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading" >
+
+    <table mat-table [dataSource]="data" matSort class="w-full">
+      <ng-container matColumnDef="symbol">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Symbol</th>
+        <td mat-cell *matCellDef="let item">{{ this.isValue(item.secCode) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="currency">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Currency</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.currency)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="assetClass">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Asset Class</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.assetClass)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="state">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>state</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.state)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="bidQty">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Bid Qty</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.bidQty)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="bidPrice">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Bid Price</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.bidPrice)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="offerPrice">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Offer Price</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.offerPrice)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="offerQty">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Offer Qty</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.offerQty)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="iop">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>IOP</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.iop)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="icp">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>ICP</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.icp)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="highPrice">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>High Price</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.highPrice)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lowPrice">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Low Price</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.lowPrice)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastTrade">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Last Trade</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.lastTrade)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="averagePrice">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Average Price</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.averageWeightedPrice)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="previousClose">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Previous Close</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.previousClose)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="change">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>% Change</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.percentChange)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="priceChange">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>PriceChange</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.priceChange)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="volume">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Volume</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.volume)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Value</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.value)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="numberOfTrades">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Number Of Trades</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.numberOfTrades)}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
 </div>
-
-

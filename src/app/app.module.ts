@@ -7,6 +7,9 @@ import { MarketDataComponent } from './components/market-data/market-data.compon
 import { SharedModule } from './shared/shared.service';
 import { HistoricalComponent } from './components/historical/historical.component';
 import { PageLayoutComponent } from './layouts/page-layout/page-layout.component';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {ApiInterceptor} from './shared/interceptors/api.interceptor';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -18,9 +21,17 @@ import { PageLayoutComponent } from './layouts/page-layout/page-layout.component
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
