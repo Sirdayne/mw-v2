@@ -1,5 +1,22 @@
 <div>
-  HEADER
+  <div>
+    <div class="w-full header" fxFlex="100%" fxLayout="row" fxLayoutAlign="space-between center">
+      <a href="https://aix.kz" class="header-logo">
+        <img class="ml-2" src="assets/images/aix-logo.svg" alt="logo">
+      </a>
+      <div class="header-date">{{ date }}</div>
+    </div>
+  </div>
+  <div>
+    <div class="main-navigation">
+      <div class="main-link">
+        <a href="https://aix.kz">AIX</a>
+      </div>
+      <div *ngFor="let nav of navLinks" class="main-link">
+        <a [routerLink]="nav.url">{{ nav.name }}</a>
+      </div>
+    </div>
+  </div>
   <div class="main-container">
     <!--<app-navigation></app-navigation>-->
     <div class="w-full">

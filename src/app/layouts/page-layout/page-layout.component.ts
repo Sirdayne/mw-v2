@@ -6,6 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./page-layout.component.scss']
 })
 export class PageLayoutComponent implements OnInit {
+  date = new Date().toLocaleDateString();
+
+  navLinks = [
+    {
+      url: '',
+      name: 'Market Data'
+    },
+    {
+      url: 'historical',
+      name: 'Historical Data'
+    }
+  ]
 
   constructor() { }
 
