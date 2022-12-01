@@ -1,0 +1,10 @@
+<div class="text-[12px]">
+  <span class="w-[80px]">Export to:</span>
+  <span fxFlex="row" fxLayoutGap="5px" class="ml-[10px] cursor-pointer">
+    <span (click)="emitDownloadReport('csv')">CSV</span>
+    <span>|</span>
+    <span (click)="emitDownloadReport('pdf')">PDF</span>
+    <span>|</span>
+    <span (click)="emitDownloadReport('xlsx')">XLSX</span>
+  </span>
+</div>

@@ -1,0 +1,13 @@
+<div class="relative">
+  <button mat-raised-button color="primary" type="button" (click)="toggleMenu()">COLUMNS</button>
+
+  <div *ngIf="showMenu" class="bg-gray-200 py-2 px-4 absolute border-b-2 rounded-sm" style="z-index: 101; top: 40px; left:0; max-height: 250px; overflow-y: scroll;">
+    <div *ngFor="let col of columns; let i=index" class="mt-1">
+      <mat-checkbox [(ngModel)]="col.show" name="col-{{i}}" color="primary">
+        {{ col.label }}
+      </mat-checkbox>
+    </div>
+  </div>
+</div>
+
+

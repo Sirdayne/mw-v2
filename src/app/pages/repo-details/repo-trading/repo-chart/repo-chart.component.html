@@ -1,0 +1,28 @@
+<div>
+  <div class="px-1 py-10">
+    <mat-form-field fxFlex="230px">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input [formControl]="startDateControl" matStartDate matInput placeholder="Start date">
+        <input [formControl]="endDateControl" matEndDate matInput placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="relative">
+  <div *ngIf="loading"
+       class="loader loader-shade">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div fxFlex="100%" fxLayoutAlign="center start">
+    <div style="max-width: 1000px; width: 100%;">
+      <canvas #lineChart></canvas>
+      <canvas #barChart></canvas>
+    </div>
+  </div>
+</div>
+
+

@@ -1,9 +1,12 @@
+@import '~material-icons/iconfont/material-icons.css';
+
 $primary-color: #002659;
 $gold-color: #b7924b;
 
 body {
   background: #f1f3f6;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  min-width: 1600px;
 }
 
 .header {
@@ -49,6 +52,7 @@ body {
     color: #fff;
     font-size: 36px;
     margin-left: 12px;
+    margin-top: 12px;
   }
 }
 
@@ -76,6 +80,15 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 200px;
+
+  &-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0,0,0,0.1);
+  }
 }
 
 .loading-shade {
@@ -93,10 +106,69 @@ body {
   justify-content: center;
 }
 
-.market-state {
-  margin: 0 0 20px;
-  padding: 20px;
+.market-title {
+  padding: 12px 25px;
   color: $gold-color;
   font-size: 19px;
   background: #fff;
+  box-sizing: border-box;
 }
+
+.card {
+  background: #fff;
+}
+
+.bg-primary {
+  background: $primary-color;
+}
+
+.bg-color {
+  color: $primary-color;
+}
+
+.navigation-list {
+  min-width: 250px;
+}
+
+.table-header-label {
+  text-align: center;
+  font-size: 13px;
+  background: $primary-color;
+  color: #fff;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.row-sum {
+  background: $primary-color;
+  .mat-cell {
+    color: #fff;
+  }
+}
+
+.mat-foot-row {
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.btn-dates-active {
+  background: #555b7c !important;
+}
+
+// @media (max-width: 500px) {
+//   .main-navigation {
+//     flex-direction: column;
+//     height: auto;
+
+//     &-wrap {
+//       height: auto;
+//     }
+//   }
+
+//   .main-link {
+//     :after {
+//       display: none;
+//     }
+//   }
+// }

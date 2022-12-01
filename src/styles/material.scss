@@ -1,3 +1,20 @@
 .mat-table .mat-header-row, .mat-table .mat-row {
   height: 30px;
 }
+
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+  background-color: $primary-color;
+}
+
+.mat-icon.mat-primary {
+  color: $primary-color;
+}
+
+.mat-row:nth-child(even){
+  background-color: rgba(177, 185, 220, 0.24);
+}
+
+.mat-row-highlight {
+  background: rgba(222, 196, 69, 0.68)!important;
+}
+

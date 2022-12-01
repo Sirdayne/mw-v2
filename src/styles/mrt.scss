@@ -1,0 +1,20 @@
+.mrt-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  &_head {
+    .mrt-cell {
+      background: $primary-color;
+      color: #fff;
+      text-align: center;
+    }
+  }
+}
+
+.mrt-cell {
+  padding: 5px;
+  border: 1px solid #555555;
+  overflow: hidden;
+  background: #fff;
+  font-size: 14px;
+}

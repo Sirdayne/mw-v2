@@ -1,0 +1,56 @@
+<div>
+  <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="24px">
+    <div fxFlex="100%">
+      <div class="table-header-label">BID</div>
+      <table *ngIf="bidRows && bidRows.length > 1; else noData" mat-table [dataSource]="bidRows" class="w-full">
+        <ng-container matColumnDef="orderNumber">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let item">{{ item.orderNumber }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="volume">
+          <th mat-header-cell *matHeaderCellDef>Volume</th>
+          <td mat-cell *matCellDef="let item">{{ item.volume }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let item">{{ item.price }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsBid; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsBid;" [class.row-sum]="row.sum">
+        </tr>
+      </table>
+    </div>
+
+    <div fxFlex="100%">
+      <div class="table-header-label">OFFER</div>
+      <table *ngIf="offerRows && offerRows.length > 1; else noData" mat-table [dataSource]="offerRows" class="w-full">
+        <ng-container matColumnDef="orderNumber">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let item">{{ item.orderNumber }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="volume">
+          <th mat-header-cell *matHeaderCellDef>Volume</th>
+          <td mat-cell *matCellDef="let item">{{ item.volume }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let item">{{ item.price }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsOffer; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsOffer;" [class.row-sum]="row.sum">
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #noData>
+  <div class="text-center pt-3">No Data Found</div>
+</ng-template>
+

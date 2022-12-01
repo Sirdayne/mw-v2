@@ -1,0 +1,115 @@
+<div>
+  <div class="market-title">
+    <div>Market state: {{ summary.marketState }}</div>
+    <div>Market volume: {{ summary.volume }}, Number of trades: {{ summary.numberOfTrades }}</div>
+  </div>
+
+  <div class="bg-white px-6 pt-1">
+    <div fxFlex="" fxLayoutAlign="start center">
+      <div>
+        <app-filter-columns [columns]="displayedColumns"></app-filter-columns>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative">
+    <div *ngIf="loading"
+         class="loader loader-shade">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort class="w-full">
+      <ng-container matColumnDef="repoMarket">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Repo Market</th>
+        <td mat-cell *matCellDef="let item">{{ this.isValue(item.repoMarket) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="repoPeriod">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Repo Period</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.repoPeriod)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="currency">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Currency</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.currency)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="assetClass">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Asset Class</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.assetClass)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="referencePrice">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Reference Price</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.referencePrice)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="haircut">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Haircut</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.haircut)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="repoPrice">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Repo Price</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.repoPrice)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="openRepoRate">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Open Repo Rate</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.openRepoRate)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="highRepoRate">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>High Repo Rate</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.highRepoRate)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lowRepoRate">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Low Repo Rate</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.lowRepoRate)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastRepoRate">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Last Repo Rate</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.lastRepoRate)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="previousCloseRepoRate">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Previous Close Repo Rate</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.previousCloseRepoRate)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="repoRateChange">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Repo Rate Change</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.repoRateChange)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dailyVolume">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Daily Volume</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.dailyVolume)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dailyValue">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Daily Value</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.dailyValue)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="numberOfTrades">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Number Of Trades</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.numberOfTrades)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="state">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>State</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.state)}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="getDisplayedColumns; sticky:true"></tr>
+      <tr mat-row
+          *matRowDef="let row; columns: getDisplayedColumns;"
+          (dblclick)="navigateToDetails(row.repoMarket, row.repoPeriod)"
+      >
+      </tr>
+    </table>
+  </div>
+</div>

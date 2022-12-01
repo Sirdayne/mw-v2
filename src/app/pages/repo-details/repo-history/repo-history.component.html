@@ -1,0 +1,65 @@
+<div class="px-6">
+  <mat-form-field fxFlex="230px">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input [formControl]="startDateControl" matStartDate matInput placeholder="Start date">
+      <input [formControl]="endDateControl" matEndDate matInput placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+</div>
+
+<div *ngIf="loading"
+     class="loader">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="!loading" >
+
+  <table mat-table [dataSource]="data" class="w-full">
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let item">{{ item.date | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="open">
+      <th mat-header-cell *matHeaderCellDef>Open</th>
+      <td mat-cell *matCellDef="let item">{{ item.open }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="high">
+      <th mat-header-cell *matHeaderCellDef>High</th>
+      <td mat-cell *matCellDef="let item">{{ item.high }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="low">
+      <th mat-header-cell *matHeaderCellDef>Low</th>
+      <td mat-cell *matCellDef="let item">{{ item.low }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="average">
+      <th mat-header-cell *matHeaderCellDef>Average</th>
+      <td mat-cell *matCellDef="let item">{{ item.averageWeightedPrice }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="close">
+      <th mat-header-cell *matHeaderCellDef>Close</th>
+      <td mat-cell *matCellDef="let item">{{ item.close }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef>Value</th>
+      <td mat-cell *matCellDef="let item">{{ item.value }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="volume">
+      <th mat-header-cell *matHeaderCellDef>Volume</th>
+      <td mat-cell *matCellDef="let item">{{ item.volume }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+  </table>
+</div>

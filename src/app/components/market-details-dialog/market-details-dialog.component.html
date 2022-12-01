@@ -1,0 +1,17 @@
+<div>
+  <div fxFlex="" fxLayoutAlign="space-between center">
+    <div class="text-[20px] font-bold">{{ inputSymbol }}</div>
+    <button color="primary" mat-raised-button (click)="navigateToDetails()">View More</button>
+  </div>
+</div>
+
+<div class="mt-2 mb-2 text-primary">Market Depth</div>
+<app-market-details-market-depth
+[inputSymbol]="inputSymbol"
+></app-market-details-market-depth>
+<div class="mt-8">
+  <app-market-details-trading
+    [inputSymbol]="inputSymbol"
+  >
+  </app-market-details-trading>
+</div>

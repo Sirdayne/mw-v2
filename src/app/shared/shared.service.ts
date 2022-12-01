@@ -20,7 +20,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoCommaPipe } from '../core/pipes/noComma.pipe';
@@ -55,6 +55,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSidenavModule,
+    FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MatSnackBarModule,
@@ -86,6 +87,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSidenavModule,
+    FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MatSnackBarModule,

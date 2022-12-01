@@ -1,0 +1,14 @@
+<div *ngIf="rate">
+  <div fxFlex="" fxLayoutAlign="start center">
+    <div *ngIf="rate > 0">
+      <mat-icon class="text-green-500">trending_up</mat-icon>
+    </div>
+    <div *ngIf="rate < 0">
+      <mat-icon class="text-red-500">trending_down</mat-icon>
+    </div>
+    <div class="ml-1">
+      {{ getRate }}
+    </div>
+  </div>
+</div>
+<div *ngIf="!rate">0</div>

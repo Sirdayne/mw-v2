@@ -1,0 +1,30 @@
+<div *ngIf="loading"
+     class="loader">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="!loading">
+  <app-two-row label="Trading Code" [data]="profile.secCode" [isPrimary]="true"></app-two-row>
+  <app-two-row label="Security code/Symbol" [data]="profile.secCode"></app-two-row>
+  <app-two-row label="Security short name" [data]="profile.shortName"></app-two-row>
+  <app-two-row label="Instrument(type of security)" [data]="profile.instrument"></app-two-row>
+  <app-two-row label="Security name" [data]="profile.securityName"></app-two-row>
+  <app-two-row label="Face currency" [data]="profile.faceCurrency"></app-two-row>
+  <app-two-row label="Country" [data]="profile.country"></app-two-row>
+  <app-two-row label="Issuer" [data]="profile.issuer"></app-two-row>
+  <app-two-row label="ISIN" [data]="profile.isin"></app-two-row>
+  <app-two-row label="Issue price" [data]="profile.referencePrice"></app-two-row>
+  <app-two-row label="Issued quantity" [data]="profile.issuedQuantity"></app-two-row>
+  <app-two-row label="Tradable quantity" [data]="profile.tradeableQuantity"></app-two-row>
+
+  <div>
+    <app-two-row label="Original issued quantity" [data]="profile.originalIssuedQuantity"></app-two-row>
+    <app-two-row label="Maturity date" [data]="profile.maturityDate ? datePipe.transform(profile.maturityDate) : '-'"></app-two-row>
+    <app-two-row label="Face value" [data]="profile.faceValue"></app-two-row>
+    <app-two-row label="Year basis (360 or 365)" [data]="profile.yearBasis"></app-two-row>
+    <app-two-row label="Coupon Rate" [data]="profile.couponRate"></app-two-row>
+    <app-two-row label="Price Multiplier" [data]="profile.priceMultiplier"></app-two-row>
+    <app-two-row label="Coupon freq" [data]="profile.couponFreq"></app-two-row>
+    <app-two-row label="Coupon date holiday" [data]="profile.couponDateHoliday"></app-two-row>
+  </div>
+</div>

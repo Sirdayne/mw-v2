@@ -1,0 +1,28 @@
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="12px">
+  <div class="card px-2 py-2" class="navigation-list">
+    <app-navigation-item
+      url="./trading"
+      title="Trading summary"
+    ></app-navigation-item>
+
+    <app-navigation-item
+      url="./history"
+      title="History"
+    ></app-navigation-item>
+
+    <app-navigation-item
+      url="./profile"
+      title="Profile"
+    ></app-navigation-item>
+
+    <app-navigation-item
+      url="./market-depth"
+      title="Market depth"
+    ></app-navigation-item>
+
+  </div>
+
+  <div class="px-6 py-6 card w-full">
+    <router-outlet></router-outlet>
+  </div>
+</div>

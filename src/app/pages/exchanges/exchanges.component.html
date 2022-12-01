@@ -1,0 +1,19 @@
+<div class="bg-white px-4 py-4">
+  <div *ngIf="data && data.length > 0">
+    <div *ngFor="let item of data; let i=index">
+      <div class="mrt-row mrt-row_head">
+        <div class="mrt-cell">{{ item.secCode }}</div>
+        <div class="mrt-cell">Buy {{ item.quotedCurrency }}</div>
+        <div class="mrt-cell">Sell {{ item.quotedCurrency }}</div>
+      </div>
+
+      <div class="mrt-row">
+        <div class="mrt-cell">{{ item.baseCurrency }}</div>
+        <div class="mrt-cell">{{ item.bidRate }}</div>
+        <div class="mrt-cell">{{ item.offerRate }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!data || !(data && data.length > 0)" class="text-[18px]">No Data Found</div>
+</div>
