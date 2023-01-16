@@ -18,7 +18,9 @@
         <input matInput [formControl]="dateControl"
                required
                [max]="maxDate"
-               [matDatepicker]="selectDatePicker">
+               [matDatepicker]="selectDatePicker"
+               [matDatepickerFilter]="validDatesFilter"
+        >
         <mat-datepicker-toggle matSuffix [for]="selectDatePicker"></mat-datepicker-toggle>
         <mat-datepicker #selectDatePicker></mat-datepicker>
         <mat-error *ngIf="dateControl.invalid">Invalid Date</mat-error>

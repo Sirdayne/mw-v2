@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
 import { HistoricalResponse, HistoricalService } from './historical.service';
 import { FormControl } from '@angular/forms';
@@ -125,6 +125,7 @@ export class HistoricalComponent implements OnInit {
 
   secCodeControl = new FormControl('');
   selectedSecCode;
+  validDates;
 
   constructor(private historicalService: HistoricalService,
               private importService: ImportService,
@@ -137,6 +138,7 @@ export class HistoricalComponent implements OnInit {
   }
 
   fetchData() {
+    this.getValidDates();
     this.getHistoricalTableData();
     this.onDateChanges();
     this.onSecCodeChanges();
@@ -147,6 +149,7 @@ export class HistoricalComponent implements OnInit {
       this.dateControl.valueChanges.subscribe(res => {
         if (res) {
           this.getHistoricalTableData();
+          this.getValidDates();
         }
       })
     )
@@ -173,6 +176,33 @@ export class HistoricalComponent implements OnInit {
       this.data = res.historicalTableRows;
       this.setDataSource();
     })
+  }
+
+  getValidDates() {
+    this.historicalService.getValidDates().subscribe((res: any) => {
+      console.log(res, ' DATES');
+      this.setValidDates();
+    });
+    this.setValidDates();
+  }
+
+  setValidDates() {
+    this.validDates = [
+      '2023-01-08T18:00:00Z',
+      '2023-01-09T18:00:00Z',
+      '2023-01-10T18:00:00Z',
+      '2023-01-12T18:00:00Z',
+      '2023-01-04T18:00:00Z',
+      '2023-01-11T18:00:00Z',
+      '2023-01-03T18:00:00Z',
+      '2023-01-05T18:00:00Z'
+    ];
+    this.validDates = this.validDates.map(item => new Date(item));
+  }
+
+  validDatesFilter = (date: Date): boolean => {
+    const time = date ? date.getTime() : null;
+    return this.validDates && this.validDates.find(item => item.getTime() == time);
   }
 
   isValue(value) {
