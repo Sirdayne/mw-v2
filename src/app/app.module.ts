@@ -35,6 +35,10 @@ import { ImportReportsComponent } from './components/import-reports/import-repor
 import { HistoricalChartComponent } from './pages/historical/historical-chart/historical-chart.component';
 import { HistoricalDialogComponent } from './pages/historical/historical-dialog/historical-dialog.component';
 import { FilterHistoricalDatesComponent } from './components/filter-historical-dates/filter-historical-dates.component';
+import { MarketTooltipComponent } from './components/market-tooltip/market-tooltip.component';
+import {
+  FilterRepoHistoricalDatesComponent
+} from './components/filter-repo-historical-dates/filter-repo-historical-dates.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +71,9 @@ import { FilterHistoricalDatesComponent } from './components/filter-historical-d
     ImportReportsComponent,
     HistoricalChartComponent,
     HistoricalDialogComponent,
-    FilterHistoricalDatesComponent
+    FilterHistoricalDatesComponent,
+    FilterRepoHistoricalDatesComponent,
+    MarketTooltipComponent
   ],
   imports: [
     BrowserModule,

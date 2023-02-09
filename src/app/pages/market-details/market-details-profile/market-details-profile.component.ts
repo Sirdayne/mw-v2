@@ -37,4 +37,8 @@ export class MarketDetailsProfileComponent implements OnInit {
     });
   }
 
+  get isNotEQTYorINDEX() {
+    return this.profile.instrument !== 'Equity' && this.profile.instrument !== 'Index';
+  }
+
 }

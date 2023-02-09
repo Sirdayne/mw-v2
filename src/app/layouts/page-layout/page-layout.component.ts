@@ -22,14 +22,14 @@ export class PageLayoutComponent implements OnInit {
       url: 'etf',
       name: 'ETF/ETN'
     },
-    // {
-    //   url: 'repo',
-    //   name: 'Repo Market'
-    // },
-    // {
-    //   url: 'repo-historical',
-    //   name: 'Repo Historical'
-    // }
+    {
+      url: 'repo',
+      name: 'Repo Market'
+    },
+    {
+      url: 'repo-historical',
+      name: 'Repo Historical'
+    }
   ];
 
   symbol;

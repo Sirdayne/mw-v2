@@ -12,6 +12,13 @@
   </div>
 </div>
 
+<app-filter-dates
+  [startDateControl]="startDateControl"
+  [endDateControl]="endDateControl"
+  [now]="now"
+  (setPeriod)="setPeriod($event)"
+></app-filter-dates>
+
 <div class="relative">
   <div *ngIf="loading"
        class="loader loader-shade">

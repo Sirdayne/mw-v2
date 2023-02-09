@@ -9,13 +9,14 @@ import {
   ViewChild
 } from '@angular/core';
 import { Chart, ChartConfiguration, ChartItem, registerables } from 'chart.js';
-import { debounceTime, finalize, Subscription } from 'rxjs';
+import { combineLatest, debounceTime, finalize, Subscription } from 'rxjs';
 import { MarketHistory } from '../../../../core/models/market-history.interface';
 import { MarketDetailsService } from '../../market-details.service';
 import { FormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { ChartNav, ChartPoint } from '../../../../core/models/chart.interface';
 
 @Component({
   selector: 'app-market-details-chart',
@@ -24,7 +25,10 @@ import { DatePipe } from '@angular/common';
 })
 export class MarketDetailsChartComponent implements OnInit, OnDestroy {
   @Input() inputSymbol;
+  @Input() isEtf;
+  @Input() inputRepoMarket;
   @ViewChild('lineChart') lineChartRef: ElementRef;
+  @ViewChild('navChart') navChartRef: ElementRef;
   @ViewChild('barChart') barChartRef: ElementRef;
 
   symbol;
@@ -34,9 +38,12 @@ export class MarketDetailsChartComponent implements OnInit, OnDestroy {
   loading = true;
 
   data;
+  navs;
   lineChart;
+  navChart;
   barChart;
   labels;
+  navLabels;
   dataPoints;
   dataNavs;
   dataValues;
@@ -56,7 +63,7 @@ export class MarketDetailsChartComponent implements OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.inputSymbol && changes.inputSymbol.currentValue) {
-      this.getMarketChart();
+      this.fetchMarketChart();
     }
   }
 
@@ -64,7 +71,7 @@ export class MarketDetailsChartComponent implements OnInit, OnDestroy {
     this.route?.parent?.params.subscribe( params => {
       this.symbol = params['symbol'];
       if (this.getSymbol) {
-        this.getMarketChart();
+        this.fetchMarketChart();
       }
     })
   }
@@ -74,35 +81,90 @@ export class MarketDetailsChartComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(250))
       .subscribe((endDate) => {
         if (endDate) {
-          this.getMarketChart();
+          this.fetchMarketChart();
         }
       }));
   }
 
-  getMarketChart() {
+  fetchMarketChart() {
     this.loading = true;
+    if (this.inputRepoMarket) {
+      this.getRepoMarketChart();
+    } else {
+      this.getMarketChart();
+    }
+  }
+
+  getRepoMarketChart() {
+    this.marketDetailsService.getRepoMarketChart(this.getSymbol,
+      this.inputRepoMarket,
+      `${DateTime.fromJSDate(this.startDateControl.value).toISODate()}`,
+      `${DateTime.fromJSDate(this.endDateControl.value).plus({ days: 1 }) .toISODate()}`)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe((chartPoints: ChartPoint[]) => {
+        this.data = chartPoints ? chartPoints : [] as ChartPoint[];
+        this.setChartData();
+      }, () => {
+        this.data = [] as ChartPoint[];
+        this.setChartData();
+      });
+  }
+
+  getMarketChart() {
     this.marketDetailsService.getMarketChart(this.getSymbol,
       `${DateTime.fromJSDate(this.startDateControl.value).toISODate()}`,
       `${DateTime.fromJSDate(this.endDateControl.value).plus({ days: 1 }) .toISODate()}`)
       .pipe(finalize(() => this.loading = false))
-      .subscribe((res: MarketHistory[]) => {
-        this.data = res ? res : [] as MarketHistory[];
-        this.setLabels();
-        this.setLineChart();
-        this.setBarChart();
+      .subscribe((chartPoints: ChartPoint[]) => {
+        this.data = chartPoints ? chartPoints : [] as ChartPoint[];
+        this.setChartData();
+      }, () => {
+        this.data = [] as ChartPoint[];
+        this.setChartData();
       });
+
+    if (this.isEtf) {
+      this.marketDetailsService.getNavChart(this.getSymbol,
+        `${DateTime.fromJSDate(this.startDateControl.value).toISODate()}`,
+        `${DateTime.fromJSDate(this.endDateControl.value).plus({ days: 1 }) .toISODate()}`)
+        .subscribe((chartNavs: ChartNav[]) => {
+          this.navs = chartNavs ? chartNavs : [] as ChartNav[];
+          this.setNavData();
+        }, () => {
+          this.navs = [] as ChartNav[];
+          this.setNavData();
+        });
+    }
+  }
+
+  setChartData() {
+    this.setLabels();
+    this.setLineChart();
+    this.setBarChart();
+  }
+
+  setNavData() {
+    this.setNavLabels();
+    this.setNavChart();
   }
 
   setLabels() {
     this.labels = [];
     this.dataPoints = [];
-    this.dataNavs = [];
     this.dataValues = [];
     this.data.forEach(item => {
       this.labels.push(new Date(item.x).toLocaleString());
       this.dataPoints.push(item.price);
-      this.dataNavs.push(item.nav);
       this.dataValues.push(item.value);
+    })
+  }
+
+  setNavLabels() {
+    this.navLabels = [];
+    this.dataNavs = [];
+    this.navs.forEach(item => {
+      this.navLabels.push(new Date(item.dateAt).toLocaleString().split(',')[0]);
+      this.dataNavs.push(item.nav);
     })
   }
 
@@ -122,15 +184,6 @@ export class MarketDetailsChartComponent implements OnInit, OnDestroy {
           cubicInterpolationMode: 'monotone',
           tension: 0.4
         },
-        {
-          label: 'Nav',
-          data: this.dataNavs,
-          backgroundColor: '#4b6ab7',
-          borderColor: '#4b6ab7',
-          fill: false,
-          cubicInterpolationMode: 'monotone',
-          tension: 0.4
-        }
       ]
     }
 
@@ -168,6 +221,61 @@ export class MarketDetailsChartComponent implements OnInit, OnDestroy {
 
     const ctx = this.lineChartRef.nativeElement.getContext('2d');
     this.lineChart = new Chart(ctx, config as ChartConfiguration);
+  }
+
+  setNavChart() {
+    if (this.navChart) {
+      this.navChart.destroy();
+    }
+    const data = {
+      labels: this.navLabels,
+      datasets: [
+        {
+          label: 'Nav',
+          data: this.dataNavs,
+          backgroundColor: '#4b6ab7',
+          borderColor: '#4b6ab7',
+          fill: false,
+          cubicInterpolationMode: 'monotone',
+          tension: 0.4
+        }
+      ]
+    }
+
+    const config = {
+      type: 'line',
+      data,
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Nav Summary'
+          },
+        },
+        interaction: {
+          intersect: false,
+        },
+        scales: {
+          x: {
+            display: true,
+            title: {
+              display: true
+            }
+          },
+          y: {
+            display: true,
+            title: {
+              display: true,
+              text: 'Nav'
+            }
+          }
+        }
+      },
+    };
+
+    const ctx = this.navChartRef.nativeElement.getContext('2d');
+    this.navChart = new Chart(ctx, config as ChartConfiguration);
   }
 
   setBarChart() {

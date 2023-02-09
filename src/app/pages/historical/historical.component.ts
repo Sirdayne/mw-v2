@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
 import { HistoricalResponse, HistoricalService } from './historical.service';
 import { FormControl } from '@angular/forms';
@@ -12,6 +12,7 @@ import { EtfService } from '../etf/etf.service';
 import { MarketDetailsDialogComponent } from '../../components/market-details-dialog/market-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HistoricalDialogComponent } from './historical-dialog/historical-dialog.component';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-historical',
@@ -104,6 +105,11 @@ export class HistoricalComponent implements OnInit {
       show: true
     },
     {
+      value: 'volume',
+      label: 'Volume',
+      show: true
+    },
+    {
       value: 'value',
       label: 'Value',
       show: true
@@ -131,28 +137,51 @@ export class HistoricalComponent implements OnInit {
               private importService: ImportService,
               private etfService: EtfService,
               private router: Router,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private decimalPipe: DecimalPipe,
+              private renderer: Renderer2) { }
 
   ngOnInit(): void {
+    this.getValidDates();
     this.fetchData();
   }
 
   fetchData() {
-    this.getValidDates();
     this.getHistoricalTableData();
     this.onDateChanges();
     this.onSecCodeChanges();
   }
-
   onDateChanges() {
     this.subscription.add(
       this.dateControl.valueChanges.subscribe(res => {
         if (res) {
           this.getHistoricalTableData();
-          this.getValidDates();
         }
       })
     )
+  }
+
+  getValidDates() {
+    this.historicalService.getValidDates().subscribe((res: any) => {
+      this.validDates = res;
+      this.setFirstDate();
+    });
+  }
+
+  setFirstDate() {
+    const firstDay = this.validDates && this.validDates[0] ? this.validDates[0] : null;
+    const date = firstDay ? new Date(firstDay) : null;
+    if (date) {
+      this.dateControl.setValue(date);
+    }
+  }
+
+  validDatesFilter = (date: Date): boolean => {
+    const time = date ? DateTime.fromJSDate(date).toISODate() : null;
+    if (this.validDates) {
+      return this.validDates && this.validDates.find(item => item === time);
+    }
+    return true;
   }
 
   onSecCodeChanges() {
@@ -175,37 +204,17 @@ export class HistoricalComponent implements OnInit {
       this.summary = res;
       this.data = res.historicalTableRows;
       this.setDataSource();
+    }, () => {
+      this.summary = {};
+      this.data = [];
+      this.setDataSource();
     })
   }
 
-  getValidDates() {
-    this.historicalService.getValidDates().subscribe((res: any) => {
-      console.log(res, ' DATES');
-      this.setValidDates();
-    });
-    this.setValidDates();
-  }
-
-  setValidDates() {
-    this.validDates = [
-      '2023-01-08T18:00:00Z',
-      '2023-01-09T18:00:00Z',
-      '2023-01-10T18:00:00Z',
-      '2023-01-12T18:00:00Z',
-      '2023-01-04T18:00:00Z',
-      '2023-01-11T18:00:00Z',
-      '2023-01-03T18:00:00Z',
-      '2023-01-05T18:00:00Z'
-    ];
-    this.validDates = this.validDates.map(item => new Date(item));
-  }
-
-  validDatesFilter = (date: Date): boolean => {
-    const time = date ? date.getTime() : null;
-    return this.validDates && this.validDates.find(item => item.getTime() == time);
-  }
-
   isValue(value) {
+    if (value && typeof value === 'number') {
+      return this.decimalPipe.transform(value, '1.' );
+    }
     return value ? value : '-';
   }
 
@@ -235,8 +244,8 @@ export class HistoricalComponent implements OnInit {
 
   downloadReport(type) {
     if (this.dateControl && this.dateControl.value) {
-      this.historicalService.downloadReport(type, this.dateControl.value).subscribe(res => {
-        this.importService.saveFile('historical', res, type);
+      this.historicalService.downloadReport(type, DateTime.fromJSDate(this.dateControl.value).toISODate()).subscribe(res => {
+        this.importService.saveFile('historical', res, type, this.dateControl.value);
       });
     }
   }

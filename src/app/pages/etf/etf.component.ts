@@ -10,6 +10,7 @@ import { TableColumn } from '../../core/models/table-column.interface';
 import { ImportService } from '../../shared/import.service';
 import { MarketDetailsDialogComponent } from '../../components/market-details-dialog/market-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-etf',
@@ -34,6 +35,11 @@ export class EtfComponent implements OnInit {
     {
       value: 'state',
       label: 'State',
+      show: true
+    },
+    {
+      value: 'referencePrice',
+      label: 'Reference Price',
       show: true
     },
     {
@@ -146,11 +152,14 @@ export class EtfComponent implements OnInit {
 
   interval;
   selectedSecCode;
+  now = new Date();
+  yesterday = new Date(this.now.getTime()).setDate(this.now.getDate() - 1);
 
   constructor(private etfService: EtfService,
               private importService: ImportService,
               private router: Router,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private decimalPipe: DecimalPipe) { }
 
   ngOnInit(): void {
     this.fetchData();
@@ -194,6 +203,9 @@ export class EtfComponent implements OnInit {
   }
 
   isValue(value) {
+    if (value && typeof value === 'number') {
+      return this.decimalPipe.transform(value, '1.' );
+    }
     return value ? value : '-';
   }
 

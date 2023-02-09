@@ -10,6 +10,7 @@ import { finalize } from 'rxjs';
 })
 export class MarketDetailsMarketDepthComponent implements OnInit, OnChanges, OnDestroy {
   @Input() inputSymbol;
+  @Input() inputRepoMarket;
   symbol: string | null = null;
   bidRows;
   offerRows;
@@ -25,9 +26,9 @@ export class MarketDetailsMarketDepthComponent implements OnInit, OnChanges, OnD
     this.route?.parent?.params.subscribe( params => {
       this.symbol = params['symbol'];
       if (this.getSymbol) {
-        this.getMarketDepth();
+        this.fetchMarketDepth();
         this.interval = setInterval(() => {
-          this.getMarketDepth();
+          this.fetchMarketDepth();
         }, 10000);
       }
     })
@@ -35,20 +36,40 @@ export class MarketDetailsMarketDepthComponent implements OnInit, OnChanges, OnD
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.inputSymbol && changes.inputSymbol.currentValue) {
+      this.fetchMarketDepth();
+    }
+  }
+
+  fetchMarketDepth() {
+    if (this.inputRepoMarket) {
+      this.getRepoMarketDepth();
+    } else {
       this.getMarketDepth();
     }
+  }
+
+  getRepoMarketDepth() {
+    this.marketDetailsService.getRepoMarketDepth(this.getSymbol, this.inputRepoMarket)
+      .subscribe((res: any) => {
+        if (res) {
+          this.bidRows = res && res.bidRows ? res.bidRows : [];
+          this.offerRows = res && res.offerRows ? res.offerRows : [];
+          this.equalizeTables();
+          this.pushSums(res);
+        }
+      })
   }
 
   getMarketDepth() {
     this.marketDetailsService.getMarketDepth(this.getSymbol)
       .subscribe((res: any) => {
-      if (res) {
-        this.bidRows = res && res.bidRows ? res.bidRows : [];
-        this.offerRows = res && res.offerRows ? res.offerRows : [];
-        this.equalizeTables();
-        this.pushSums(res);
-      }
-    })
+        if (res) {
+          this.bidRows = res && res.bidRows ? res.bidRows : [];
+          this.offerRows = res && res.offerRows ? res.offerRows : [];
+          this.equalizeTables();
+          this.pushSums(res);
+        }
+      })
   }
 
   pushSums(res) {

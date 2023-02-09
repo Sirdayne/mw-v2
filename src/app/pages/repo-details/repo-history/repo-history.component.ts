@@ -5,6 +5,7 @@ import { debounceTime, finalize, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DateTime } from 'luxon';
 import { RepoDetailsService } from '../repo-details.service';
+import { ImportService } from '../../../shared/import.service';
 
 @Component({
   selector: 'app-repo-history',
@@ -35,7 +36,8 @@ export class RepoHistoryComponent implements OnInit {
   subscription = new Subscription();
 
   constructor(private route: ActivatedRoute,
-              private repoDetailsService: RepoDetailsService) {
+              private repoDetailsService: RepoDetailsService,
+              private importService: ImportService) {
     this.onDateControlsChange();
   }
 
@@ -68,6 +70,20 @@ export class RepoHistoryComponent implements OnInit {
           this.getMarketHistory();
         }
       }));
+  }
+
+  setPeriod(startDate) {
+    this.startDateControl.patchValue(startDate);
+    this.endDateControl.patchValue(this.now);
+  }
+
+  downloadReport(type) {
+    if (this.startDateControl && this.startDateControl.value &&
+      this.endDateControl && this.endDateControl.value) {
+      this.repoDetailsService.downloadHistoryReport(type, this.symbol, this.startDateControl.value, this.endDateControl.value).subscribe(res => {
+        this.importService.saveFile('repoHistory', res, type);
+      });
+    }
   }
 
   ngOnDestroy() {

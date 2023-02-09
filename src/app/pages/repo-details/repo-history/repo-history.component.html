@@ -1,13 +1,30 @@
 <div class="px-6">
-  <mat-form-field fxFlex="230px">
-    <mat-label>Enter a date range</mat-label>
-    <mat-date-range-input [rangePicker]="picker">
-      <input [formControl]="startDateControl" matStartDate matInput placeholder="Start date">
-      <input [formControl]="endDateControl" matEndDate matInput placeholder="End date">
-    </mat-date-range-input>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-date-range-picker #picker></mat-date-range-picker>
-  </mat-form-field>
+  <div>
+    <div fxFlex="" fxLayoutAlign="space-between center">
+      <mat-form-field fxFlex="230px">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input [formControl]="startDateControl" matStartDate matInput placeholder="Start date">
+          <input [formControl]="endDateControl" matEndDate matInput placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+
+    <app-import-reports
+      (downloadReport)="downloadReport($event)"
+    ></app-import-reports>
+  </div>
+
+  <div class="mt-4 mb-4">
+    <app-filter-dates
+      [startDateControl]="startDateControl"
+      [endDateControl]="endDateControl"
+      [now]="now"
+      (setPeriod)="setPeriod($event)"
+    ></app-filter-dates>
+  </div>
 </div>
 
 <div *ngIf="loading"

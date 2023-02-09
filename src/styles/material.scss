@@ -18,3 +18,17 @@
   background: rgba(222, 196, 69, 0.68)!important;
 }
 
+.mat-tooltip {
+  font-size: 15px;
+  position: relative;
+  ::before {
+    position: absolute;
+    content: ' POSHEL NA HUY';
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background: #002f6c;
+    color: #fff;
+  }
+}

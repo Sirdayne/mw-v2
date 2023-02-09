@@ -1,9 +1,17 @@
-<div class="market-title">
-  <div>REPO HISTORICAL DATA</div>
+<div>
+  <div class="bg-white" fxFlex="" fxLayoutAlign="space-between center">
+    <div class="market-title">
+      <div>REPO HISTORICAL DATA</div>
+    </div>
+
+    <app-import-reports
+      (downloadReport)="downloadReport($event)"
+    ></app-import-reports>
+  </div>
 </div>
 
 <div class="bg-white px-6 pt-1">
-  <mat-form-field fxFlex="230px">
+  <mat-form-field fxFlex="230px" class="mr-4">
     <mat-label>Enter a date range</mat-label>
     <mat-date-range-input [rangePicker]="picker">
       <input [formControl]="startDateControl" matStartDate matInput placeholder="Start date">
@@ -12,6 +20,14 @@
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker></mat-date-range-picker>
   </mat-form-field>
+
+  <div fxFlex="850px">
+      <app-filter-repo-historical-dates
+        [startDateControl]="startDateControl"
+        [endDateControl]="endDateControl"
+        [now]="now"
+      ></app-filter-repo-historical-dates>
+  </div>
 </div>
 
 <div class="relative">
@@ -47,7 +63,63 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-    </tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <ng-container matColumnDef="foot-0">
+      <th mat-header-cell *matFooterCellDef
+          [attr.colspan]="2"
+          [attr.rowspan]="1"
+          class="mat-foot-row"
+      >
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="foot-1">
+      <th mat-header-cell *matFooterCellDef
+          [style.text-align]="'center'"
+          [attr.colspan]="1"
+          [attr.rowspan]="1"
+          class="mat-foot-row"
+      >
+        <div>
+          <div matTooltip="Totals include negotiated trades"
+               aria-label="Totals include negotiated trades"
+               fxFlex="row"
+               fxLayoutAlign="start center"
+          >
+            Total trading value: <mat-icon class="mb-1 ml-2 mr-2">info</mat-icon>
+          </div>
+        </div>
+      </th>
+    </ng-container>
+
+    <ng-container matColumnDef="foot-2">
+      <th mat-header-cell *matFooterCellDef
+          [attr.colspan]="1"
+          [attr.rowspan]="1"
+          class="mat-foot-row"
+      >
+        <div>
+          <div matTooltip="Based on currency rates from National Bank Of Kazakhstan for the day of trade"
+               aria-label="Based on currency rates from National Bank Of Kazakhstan for the day of trade"
+               fxFlex="row"
+               fxLayoutAlign="start center"
+          >
+            {{ summary.currentPeriodValueSum | number: '1.'   }} <mat-icon class="mb-1 ml-2 mr-2">info</mat-icon>
+          </div>
+        </div>
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="foot-3">
+      <th mat-header-cell *matFooterCellDef
+          [attr.colspan]="1"
+          [attr.rowspan]="1"
+          class="mat-foot-row"
+      >
+        {{ summary.currentPeriodVolumeSum | number: '1.'   }}
+      </th>
+    </ng-container>
+
+    <tr mat-footer-row *matFooterRowDef="['foot-0', 'foot-1', 'foot-2', 'foot-3']" class="bg-primary"></tr>
+
   </table>
 </div>

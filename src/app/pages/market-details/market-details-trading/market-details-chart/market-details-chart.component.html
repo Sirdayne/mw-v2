@@ -29,6 +29,7 @@
   <div fxFlex="100%" fxLayoutAlign="center start">
     <div style="max-width: 1000px; width: 100%;">
       <canvas #lineChart></canvas>
+      <canvas *ngIf="isEtf" #navChart></canvas>
       <canvas #barChart></canvas>
     </div>
   </div>

@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { ImportService } from '../../../shared/import.service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-historical-data',
@@ -41,7 +42,8 @@ export class HistoricalDataComponent implements OnInit, OnDestroy {
 
   constructor(private historicalService: HistoricalService,
               private importService: ImportService,
-              private router: Router) { }
+              private router: Router,
+              private decimalPipe: DecimalPipe) { }
 
   ngOnInit(): void {
     this.getHistoricalTableData();
@@ -80,6 +82,9 @@ export class HistoricalDataComponent implements OnInit, OnDestroy {
   }
 
   isValue(value) {
+    if (value && typeof value === 'number') {
+      return this.decimalPipe.transform(value, '1.' );
+    }
     return value ? value : '-';
   }
 

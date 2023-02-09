@@ -7,6 +7,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { TableColumn } from '../../core/models/table-column.interface';
+import { DecimalPipe } from '@angular/common';
+import { MarketDetailsDialogComponent } from '../../components/market-details-dialog/market-details-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ImportService } from '../../shared/import.service';
 
 @Component({
   selector: 'app-repo-historical',
@@ -107,9 +111,13 @@ export class RepoHistoricalComponent implements OnInit, OnDestroy {
   maxDate = DateTime.local().minus({ days: 1 }).toJSDate();
   dateControl = new FormControl(this.maxDate);
   subscription = new Subscription();
+  selectedRepoMarket;
 
   constructor(private repoHistoricalService: RepoHistoricalService,
-              private router: Router) {
+              private router: Router,
+              private decimalPipe: DecimalPipe,
+              private dialog: MatDialog,
+              private importService: ImportService) {
   }
 
   ngOnInit(): void {
@@ -136,7 +144,17 @@ export class RepoHistoricalComponent implements OnInit, OnDestroy {
     ).subscribe((res: RepoHistoricalResponse) => {
       this.data  = res.repoHistoricalTableRows;
       this.setDataSource();
+      if (res) {
+        this.setSummary(res);
+      }
     })
+  }
+
+  setSummary(res) {
+    this.summary.dailyValueSum = res.dailyValueSum;
+    this.summary.dailyValueSumUSD = res.dailyValueSumUSD;
+    this.summary.dailyVolumeSum = res.dailyVolumeSum;
+    this.summary.numberOfTradesSum = res.numberOfTradesSum;
   }
 
   setDataSource() {
@@ -145,6 +163,9 @@ export class RepoHistoricalComponent implements OnInit, OnDestroy {
   }
 
   isValue(value) {
+    if (value && typeof value === 'number') {
+      return this.decimalPipe.transform(value, '1.' );
+    }
     return value ? value : '-';
   }
 
@@ -160,5 +181,34 @@ export class RepoHistoricalComponent implements OnInit, OnDestroy {
 
   get getDisplayedColumns() {
     return this.displayedColumns.filter(item => item.show).map(item => item.value);
+  }
+
+  downloadReport(type) {
+    if (this.dateControl && this.dateControl.value) {
+      this.repoHistoricalService.downloadReport(type, DateTime.fromJSDate(this.dateControl.value).toISODate()).subscribe(res => {
+        this.importService.saveFile('repoHistorical', res, type, this.dateControl.value);
+      });
+    }
+  }
+
+  openDialog(secCode, repoPeriod) {
+    this.selectedRepoMarket = secCode + repoPeriod;
+    const dialogRef = this.dialog.open(MarketDetailsDialogComponent, {
+      maxWidth: '50vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      position: {
+        top: '0',
+        right: '0'
+      },
+      enterAnimationDuration: '10ms',
+      data: {
+        secCode,
+        repoPeriod
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(() => this.selectedRepoMarket = null);
   }
 }

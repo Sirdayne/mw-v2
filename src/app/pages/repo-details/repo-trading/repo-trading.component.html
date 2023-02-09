@@ -6,7 +6,7 @@
 <div *ngIf="!loading">
   <div fxLayoutAlign="start">
     <div fxFlex="100%">
-      <app-two-row label="Change" [data]="tradingSummary.priceChange" [isPrimary]="true"></app-two-row>
+      <app-two-row label="Change" [data]="tradingSummary.priceChange" [isPrimary]="true" [isRate]="true"></app-two-row>
       <app-two-row label="Open price" [data]="tradingSummary.openPrice"></app-two-row>
       <app-two-row label="Closing price" [data]="tradingSummary.closePrice"></app-two-row>
       <app-two-row label="Previous closing price" [data]="tradingSummary.previousClose"></app-two-row>
@@ -15,11 +15,11 @@
     </div>
 
     <div fxFlex="100%">
-      <app-two-row label="Change(%)" [data]="tradingSummary.percentChange" [isPrimary]="true"></app-two-row>
+      <app-two-row label="Change(%)" [data]="tradingSummary.percentChange" [isPrimary]="true" [isRate]="true"></app-two-row>
       <app-two-row label="Last trade" [data]="datePipe.transform(tradingSummary.lastTradeDate)"></app-two-row>
       <app-two-row label="Number of trades" [data]="tradingSummary.numberOfTrades"></app-two-row>
-      <app-two-row label="Total volume" [data]="tradingSummary.totalVolume"></app-two-row>
-      <app-two-row label="Total value" [data]="tradingSummary.totalValue"></app-two-row>
+      <app-two-row label="Daily volume" [data]="tradingSummary.dailyVolume"></app-two-row>
+      <app-two-row label="Daily value" [data]="tradingSummary.dailyValue"></app-two-row>
     </div>
   </div>
 </div>

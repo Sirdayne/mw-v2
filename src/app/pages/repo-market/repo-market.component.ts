@@ -6,6 +6,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { TableColumn } from '../../core/models/table-column.interface';
+import { DecimalPipe } from '@angular/common';
+import { MarketDetailsDialogComponent } from '../../components/market-details-dialog/market-details-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-repo-market',
@@ -109,9 +112,12 @@ export class RepoMarketComponent implements OnInit {
   summary = {} as any;
 
   interval;
+  selectedRepoMarket;
 
   constructor(private repoMarketService: RepoMarketService,
-              private router: Router) { }
+              private router: Router,
+              private decimalPipe: DecimalPipe,
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.fetchData();
@@ -156,9 +162,15 @@ export class RepoMarketComponent implements OnInit {
 
     const volume = res.find(item => item.code === 'TotalVolume');
     this.summary.volume = volume && volume.value ? volume.value : '-';
+
+    const totalValue = res.find(item => item.code === 'TotalValue');
+    this.summary.totalValue = totalValue && totalValue.value ? totalValue.value : '-';
   }
 
   isValue(value) {
+    if (value && typeof value === 'number') {
+      return this.decimalPipe.transform(value, '1.' );
+    }
     return value ? value : '-';
   }
 
@@ -178,6 +190,27 @@ export class RepoMarketComponent implements OnInit {
 
   get getDisplayedColumns() {
     return this.displayedColumns.filter(item => item.show).map(item => item.value);
+  }
+
+  openDialog(secCode, repoPeriod) {
+    this.selectedRepoMarket = secCode + repoPeriod;
+    const dialogRef = this.dialog.open(MarketDetailsDialogComponent, {
+      maxWidth: '50vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      position: {
+        top: '0',
+        right: '0'
+      },
+      enterAnimationDuration: '10ms',
+      data: {
+        secCode,
+        repoPeriod
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(() => this.selectedRepoMarket = null);
   }
 }
 

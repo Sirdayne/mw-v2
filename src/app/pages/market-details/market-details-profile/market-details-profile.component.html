@@ -17,7 +17,7 @@
   <app-two-row label="Issued quantity" [data]="profile.issuedQuantity"></app-two-row>
   <app-two-row label="Tradable quantity" [data]="profile.tradeableQuantity"></app-two-row>
 
-  <div>
+  <div *ngIf="isNotEQTYorINDEX">
     <app-two-row label="Original issued quantity" [data]="profile.originalIssuedQuantity"></app-two-row>
     <app-two-row label="Maturity date" [data]="profile.maturityDate ? datePipe.transform(profile.maturityDate) : '-'"></app-two-row>
     <app-two-row label="Face value" [data]="profile.faceValue"></app-two-row>

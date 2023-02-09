@@ -55,4 +55,21 @@ export class RepoHistoricalService {
     const params = { filter };
     return this.httpService.get<RepoHistoricalDataResponse>('/periodical/repo-data', { params });
   }
+
+  downloadReport(type, date) {
+    const payload = { date, assetClass: 'ALL' };
+    const filter = JSON.stringify(payload);
+    const params = { type, filter };
+    return this.httpService.get('/historical/repo-report', { params, responseType: 'blob' });
+  }
+
+  downloadHistoricalDataReport(
+    type,
+    dateFrom, dateTo
+  ) {
+    const payload = { dateFrom, dateTo };
+    const filter = JSON.stringify(payload);
+    const params = { type, filter };
+    return this.httpService.get('/periodical/repo-report', { params, responseType: 'blob' });
+  }
 }

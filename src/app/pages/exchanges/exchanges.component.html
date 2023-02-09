@@ -9,8 +9,8 @@
 
       <div class="mrt-row">
         <div class="mrt-cell">{{ item.baseCurrency }}</div>
-        <div class="mrt-cell">{{ item.bidRate }}</div>
-        <div class="mrt-cell">{{ item.offerRate }}</div>
+        <div class="mrt-cell">{{ item.bidRate | number:'1.0-8'}}</div>
+        <div class="mrt-cell">{{ item.offerRate | number:'1.0-8'}}</div>
       </div>
     </div>
   </div>

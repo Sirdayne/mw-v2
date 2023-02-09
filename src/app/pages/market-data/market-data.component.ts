@@ -10,6 +10,7 @@ import { TableColumn } from '../../core/models/table-column.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MarketDetailsDialogComponent } from '../../components/market-details-dialog/market-details-dialog.component';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-market-data',
@@ -43,6 +44,11 @@ export class MarketDataComponent implements OnInit, OnDestroy {
       show: true
     },
     {
+      value: 'referencePrice',
+      label: 'Reference Price',
+      show: true
+    },
+    {
       value: 'bidQty',
       label: 'Bid Qty',
       show: true
@@ -70,6 +76,11 @@ export class MarketDataComponent implements OnInit, OnDestroy {
     {
       value: 'icp',
       label: 'ICP',
+      show: true
+    },
+    {
+      value: 'open',
+      label: 'Open',
       show: true
     },
     {
@@ -135,7 +146,8 @@ export class MarketDataComponent implements OnInit, OnDestroy {
 
   constructor(private marketDataService: MarketDataService,
               private router: Router,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private decimalPipe: DecimalPipe) { }
 
   ngOnInit(): void {
     this.fetchData();
@@ -179,6 +191,9 @@ export class MarketDataComponent implements OnInit, OnDestroy {
   }
 
   isValue(value) {
+    if (value && typeof value === 'number') {
+      return this.decimalPipe.transform(value, '1.' );
+    }
     return value ? value : '-';
   }
 

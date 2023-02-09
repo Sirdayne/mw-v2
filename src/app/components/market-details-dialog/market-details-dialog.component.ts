@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 export interface DataMarketDetailsDialog {
   secCode: string;
+  repoPeriod?: string;
 }
 
 @Component({
@@ -14,6 +15,7 @@ export interface DataMarketDetailsDialog {
 export class MarketDetailsDialogComponent implements OnInit {
 
   inputSymbol: string;
+  inputRepoMarket;
 
   constructor(public dialogRef: MatDialogRef<MarketDetailsDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DataMarketDetailsDialog,
@@ -21,10 +23,15 @@ export class MarketDetailsDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.inputSymbol = this.data.secCode;
+    this.inputRepoMarket = this.data && this.data.repoPeriod ? this.data.repoPeriod : null;
   }
 
   navigateToDetails() {
     this.dialogRef.close();
-    this.router.navigateByUrl('/details/' + this.inputSymbol + '/trading');
+    if (this.inputRepoMarket) {
+      this.router.navigateByUrl('/repo-details/' + this.inputSymbol + '/' + this.inputRepoMarket + '/trading');
+    } else {
+      this.router.navigateByUrl('/details/' + this.inputSymbol + '/trading');
+    }
   }
 }

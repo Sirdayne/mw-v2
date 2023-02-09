@@ -1,6 +1,14 @@
 <div>
-  <div class="market-title">
-    <div>REPO DAILY TRADING REPORT</div>
+  <div>
+    <div class="bg-white" fxFlex="" fxLayoutAlign="space-between center">
+      <div class="market-title">
+        <div>REPO DAILY TRADING REPORT</div>
+      </div>
+
+      <app-import-reports
+        (downloadReport)="downloadReport($event)"
+      ></app-import-reports>
+    </div>
   </div>
 
   <div class="bg-white px-6 pt-1">
@@ -33,7 +41,9 @@
     <table mat-table [dataSource]="dataSource" matSort class="w-full">
       <ng-container matColumnDef="repoMarket">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>Repo Market</th>
-        <td mat-cell *matCellDef="let item">{{ this.isValue(item.repoMarket) }}</td>
+        <td mat-cell *matCellDef="let item"
+            (click)="navigateToDetails(item.repoMarket, item.repoPeriod)"
+        >{{ this.isValue(item.repoMarket) }}</td>
       </ng-container>
 
       <ng-container matColumnDef="repoPeriod">
@@ -114,9 +124,69 @@
       <tr mat-header-row *matHeaderRowDef="getDisplayedColumns; sticky:true"></tr>
       <tr mat-row
           *matRowDef="let row; columns: getDisplayedColumns;"
-          (dblclick)="navigateToDetails(row.repoMarket, row.repoPeriod)"
+          (click)="openDialog(row.repoMarket, row.repoPeriod)"
+          [class.mat-row-highlight]="row.repoMarket + row.repoPeriod === selectedRepoMarket"
+          class="cursor-pointer"
       >
       </tr>
+
+      <ng-container matColumnDef="foot-1">
+        <th mat-header-cell *matFooterCellDef
+            [attr.colspan]="11"
+            [attr.rowspan]="1"
+            class="mat-foot-row"
+        >
+        </th>
+      </ng-container>
+      <ng-container matColumnDef="foot-2">
+        <th mat-header-cell *matFooterCellDef
+            [style.text-align]="'center'"
+            [attr.colspan]="2"
+            [attr.rowspan]="1"
+            class="mat-foot-row"
+        >
+          Total trading value:
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="foot-3">
+        <th mat-header-cell *matFooterCellDef
+            [attr.colspan]="1"
+            [attr.rowspan]="1"
+            class="mat-foot-row"
+        >
+          {{ summary.dailyVolumeSum | number: '1.'   }}
+        </th>
+      </ng-container>
+      <ng-container matColumnDef="foot-4">
+        <th mat-header-cell *matFooterCellDef
+            [attr.colspan]="1"
+            [attr.rowspan]="1"
+            class="mat-foot-row"
+        >
+          <div>
+            <div matTooltip="Based on currency rates from National Bank Of Kazakhstan for the day of trade"
+                 aria-label="Based on currency rates from National Bank Of Kazakhstan for the day of trade"
+                 fxFlex="row"
+                 fxLayoutAlign="start center"
+            >
+              {{ summary.dailyValueSumUSD | number: '1.'   }} USD <mat-icon class="mb-1 ml-2 mr-2">info</mat-icon>
+            </div>
+          </div>
+        </th>
+      </ng-container>
+
+      <ng-container matColumnDef="foot-5">
+        <th mat-header-cell *matFooterCellDef
+            [attr.colspan]="1"
+            [attr.rowspan]="1"
+            class="mat-foot-row"
+        >
+          {{ summary.numberOfTradesSum }}
+        </th>
+      </ng-container>
+      <tr mat-footer-row *matFooterRowDef="['foot-1', 'foot-2', 'foot-3', 'foot-4', 'foot-5']" class="bg-primary"></tr>
+
     </table>
   </div>
 </div>

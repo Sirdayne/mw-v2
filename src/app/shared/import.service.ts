@@ -7,11 +7,12 @@ export class ImportService {
 
   constructor() { }
 
-  saveFile(filename, blob, format = 'csv') {
+  saveFile(filename, blob, format = 'csv', currentDate = null) {
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     const today = new Date();
-    link.download = `${filename}-${today.toLocaleDateString()}.${format}`;
+    const date = currentDate ? currentDate : today;
+    link.download = `${filename}-${date.toLocaleDateString()}.${format}`;
     link.click();
   }
 }

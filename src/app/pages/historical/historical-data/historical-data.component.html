@@ -140,12 +140,13 @@
       </ng-container>
       <ng-container matColumnDef="foot-2">
         <th mat-header-cell *matFooterCellDef
-            [style.text-align]="'center'"
             [attr.colspan]="1"
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          Total trading value:
+          <app-market-tooltip text="Totals include negotiated trades">
+            Total trading value:
+          </app-market-tooltip>
         </th>
       </ng-container>
 
@@ -155,7 +156,9 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          {{ summary.currentPeriodValueSum }}
+          <app-market-tooltip>
+            {{ summary.currentPeriodValueSum | number: '1.'   }} USD
+          </app-market-tooltip>
         </th>
       </ng-container>
       <ng-container matColumnDef="foot-4">
@@ -174,7 +177,9 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          {{ summary.lastPeriodValueSum }}
+          <app-market-tooltip>
+            {{ summary.lastPeriodValueSum | number: '1.'   }} USD
+          </app-market-tooltip>
         </th>
       </ng-container>
       <ng-container matColumnDef="foot-6">
@@ -193,7 +198,9 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          <app-rate-change [rate]="summary.trendValueSum"></app-rate-change>
+          <app-market-tooltip>
+            <app-rate-change [rate]="summary.trendValueSum"></app-rate-change>
+          </app-market-tooltip>
         </th>
       </ng-container>
       <tr mat-footer-row *matFooterRowDef="['foot-1', 'foot-2', 'foot-3', 'foot-4', 'foot-5', 'foot-6', 'foot-7']" class="bg-primary"></tr>

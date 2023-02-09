@@ -169,6 +169,11 @@ export class RepoChartComponent implements OnInit {
     this.barChart = new Chart(ctx2, config as ChartConfiguration);
   }
 
+  setPeriod(startDate) {
+    this.startDateControl.patchValue(startDate);
+    this.endDateControl.patchValue(this.now);
+  }
+
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();

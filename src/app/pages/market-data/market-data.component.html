@@ -38,7 +38,7 @@
 
       <ng-container matColumnDef="currency">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>Currency</th>
-        <td mat-cell *matCellDef="let item">{{this.isValue(item.currency)}}</td>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.currency)}} {{ item.isEnableMultiCurrency ? '*' : ''}}</td>
       </ng-container>
 
       <ng-container matColumnDef="assetClass">
@@ -49,6 +49,11 @@
       <ng-container matColumnDef="state">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>State</th>
         <td mat-cell *matCellDef="let item">{{this.isValue(item.state)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="referencePrice">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Reference Price</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.referencePrice)}}</td>
       </ng-container>
 
       <ng-container matColumnDef="bidQty">
@@ -79,6 +84,11 @@
       <ng-container matColumnDef="icp">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>ICP</th>
         <td mat-cell *matCellDef="let item">{{this.isValue(item.icp)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="open">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Open</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.open)}}</td>
       </ng-container>
 
       <ng-container matColumnDef="highPrice">
@@ -146,7 +156,7 @@
 
       <ng-container matColumnDef="foot-1">
         <th mat-header-cell *matFooterCellDef
-            [attr.colspan]="15"
+            [attr.colspan]="17"
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
@@ -160,7 +170,9 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          Total trading value:
+          <app-market-tooltip text="Totals include negotiated trades">
+            Total trading value:
+          </app-market-tooltip>
         </th>
       </ng-container>
 
@@ -179,7 +191,9 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          {{ summary.value }}
+          <app-market-tooltip>
+            {{ summary.value | number: '1.' }} USD
+          </app-market-tooltip>
         </th>
       </ng-container>
 

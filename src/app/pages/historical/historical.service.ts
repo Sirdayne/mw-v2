@@ -42,21 +42,16 @@ export class HistoricalService {
     return this.httpService.get<HistoricalResponse>('/historical/table-data', { params });
   }
 
-  getValidDates() {
-    const month = 1;
-    const year = 2023;
-    const payload = { month: month, year: year };
-    const validDatesFilter = JSON.stringify(payload);
-    const params = { validDatesFilter };
-    return this.httpService.get<HistoricalResponse>('/historical/valid-dates', { params });
-  }
-
   getPeriodicalTableData(currentDateFrom, currentDateTo,
                          lastDateFrom, lastDateTo) {
     const payload = { currentDateFrom, currentDateTo, lastDateFrom, lastDateTo };
     const filter = JSON.stringify(payload);
     const params = { filter };
     return this.httpService.get<PeriodicalResponse>('/periodical/data', { params });
+  }
+
+  getValidDates() {
+    return this.httpService.get('/historical/all-valid-dates');
   }
 
   downloadReport(type, date) {

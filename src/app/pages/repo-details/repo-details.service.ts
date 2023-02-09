@@ -28,4 +28,14 @@ export class RepoDetailsService {
   getRepoTradingSummary(symbol, period) {
     return this.httpService.get<TradingSummary>('/symbol/repo-trading-summary/' + symbol + '/' + period);
   }
+
+  downloadHistoryReport(
+    type, secCode,
+    dateFrom, dateTo
+  ) {
+    const payload = { secCode, dateFrom, dateTo };
+    const filter = JSON.stringify(payload);
+    const params = { type, filter };
+    return this.httpService.get('/symbol/historical-specific/repo-report', { params, responseType: 'blob' });
+  }
 }

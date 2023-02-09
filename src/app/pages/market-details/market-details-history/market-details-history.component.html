@@ -42,37 +42,37 @@
 
     <ng-container matColumnDef="open">
       <th mat-header-cell *matHeaderCellDef>Open</th>
-      <td mat-cell *matCellDef="let item">{{ item.open }}</td>
+      <td mat-cell *matCellDef="let item">{{ item.open | number: '1.'  }}</td>
     </ng-container>
 
     <ng-container matColumnDef="high">
       <th mat-header-cell *matHeaderCellDef>High</th>
-      <td mat-cell *matCellDef="let item">{{ item.high }}</td>
+      <td mat-cell *matCellDef="let item">{{ item.high | number: '1.'  }}</td>
     </ng-container>
 
     <ng-container matColumnDef="low">
       <th mat-header-cell *matHeaderCellDef>Low</th>
-      <td mat-cell *matCellDef="let item">{{ item.low }}</td>
+      <td mat-cell *matCellDef="let item">{{ item.low | number: '1.'  }}</td>
     </ng-container>
 
     <ng-container matColumnDef="average">
       <th mat-header-cell *matHeaderCellDef>Average</th>
-      <td mat-cell *matCellDef="let item">{{ item.averageWeightedPrice }}</td>
+      <td mat-cell *matCellDef="let item">{{ item.averageWeightedPrice | number: '1.'  }}</td>
     </ng-container>
 
     <ng-container matColumnDef="close">
       <th mat-header-cell *matHeaderCellDef>Close</th>
-      <td mat-cell *matCellDef="let item">{{ item.close }}</td>
+      <td mat-cell *matCellDef="let item">{{ item.close | number: '1.'  }}</td>
     </ng-container>
 
     <ng-container matColumnDef="value">
       <th mat-header-cell *matHeaderCellDef>Value</th>
-      <td mat-cell *matCellDef="let item">{{ item.value }}</td>
+      <td mat-cell *matCellDef="let item">{{ item.value | number: '1.'  }}</td>
     </ng-container>
 
     <ng-container matColumnDef="volume">
       <th mat-header-cell *matHeaderCellDef>Volume</th>
-      <td mat-cell *matCellDef="let item">{{ item.volume }}</td>
+      <td mat-cell *matCellDef="let item">{{ item.volume | number: '1.'  }}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>

@@ -12,8 +12,10 @@ import { DatePipe } from '@angular/common';
 })
 export class MarketDetailsTradingComponent implements OnInit, OnChanges {
   @Input() inputSymbol;
+  @Input() inputRepoMarket;
   symbol = '';
   tradingSummary: TradingSummary;
+  isEtf = false;
   loading = true;
 
   constructor(private marketDetailsService: MarketDetailsService,
@@ -24,23 +26,41 @@ export class MarketDetailsTradingComponent implements OnInit, OnChanges {
     this.route?.parent?.params.subscribe( params => {
       this.symbol = params['symbol'];
       if (this.getSymbol) {
-        this.getTradingSummary();
+        this.fetchTradingSummary();
       }
     })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.inputSymbol && changes.inputSymbol.currentValue) {
+      this.fetchTradingSummary();
+    }
+  }
+
+  fetchTradingSummary() {
+    this.loading = true;
+    if (this.inputRepoMarket) {
+      this.getRepoTradingSummary();
+    } else {
       this.getTradingSummary();
     }
   }
 
+  getRepoTradingSummary() {
+    this.marketDetailsService.getRepoTradingSummary(this.getSymbol, this.inputRepoMarket)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe((res: TradingSummary) => {
+        this.tradingSummary = res ? res : {} as TradingSummary;
+        this.isEtf = this.tradingSummary.isEtfEtn;
+      });
+  }
+
   getTradingSummary() {
-    this.loading = true;
     this.marketDetailsService.getTradingSummary(this.getSymbol)
       .pipe(finalize(() => this.loading = false))
       .subscribe((res: TradingSummary) => {
         this.tradingSummary = res ? res : {} as TradingSummary;
+        this.isEtf = this.tradingSummary.isEtfEtn;
       });
   }
 

@@ -36,12 +36,17 @@
 
       <ng-container matColumnDef="currency">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>Currency</th>
-        <td mat-cell *matCellDef="let item">{{this.isValue(item.currency)}}</td>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.currency)}} {{ item.isEnableMultiCurrency ? '*' : ''}}</td>
       </ng-container>
 
       <ng-container matColumnDef="state">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>State</th>
         <td mat-cell *matCellDef="let item">{{this.isValue(item.state)}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="referencePrice">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Reference Price</th>
+        <td mat-cell *matCellDef="let item">{{this.isValue(item.referencePrice)}}</td>
       </ng-container>
 
       <ng-container matColumnDef="bidQty">
@@ -75,7 +80,12 @@
       </ng-container>
 
       <ng-container matColumnDef="nav">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef>NAV</th>
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>
+          <div>
+            NAV  <br>
+            {{ yesterday | date: 'dd.MM' }}
+          </div>
+        </th>
         <td mat-cell *matCellDef="let item">{{this.isValue(item.nav)}}</td>
       </ng-container>
 
@@ -126,14 +136,14 @@
       <ng-container matColumnDef="percentChange">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>% Change</th>
         <td mat-cell *matCellDef="let item">
-          <app-rate-change [rate]="summary.percentChange"></app-rate-change>
+          <app-rate-change [rate]="item.percentChange"></app-rate-change>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="priceChange">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>PriceChange</th>
         <td mat-cell *matCellDef="let item">
-          <app-rate-change [rate]="summary.priceChange"></app-rate-change>
+          <app-rate-change [rate]="item.priceChange"></app-rate-change>
         </td>
       </ng-container>
 
@@ -163,7 +173,7 @@
 
       <ng-container matColumnDef="foot-1">
         <th mat-header-cell *matFooterCellDef
-            [attr.colspan]="18"
+            [attr.colspan]="19"
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
@@ -177,7 +187,9 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          Total trading value:
+          <app-market-tooltip text="Totals include negotiated trades">
+            Total trading value:
+          </app-market-tooltip>
         </th>
       </ng-container>
 
@@ -187,7 +199,7 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          {{ summary.volume }}
+          {{ summary.volume | number: '1.'  }}
         </th>
       </ng-container>
       <ng-container matColumnDef="foot-4">
@@ -196,7 +208,9 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          {{ summary.value }} {{ summary.changedCurrency }}
+          <app-market-tooltip>
+            {{ summary.value | number: '1.'  }}  {{ summary.changedCurrency }}
+          </app-market-tooltip>
         </th>
       </ng-container>
 
@@ -206,7 +220,7 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          {{ summary.numberOfTrades }}
+          {{ summary.numberOfTrades | number: '1.'  }}
         </th>
       </ng-container>
       <tr mat-footer-row *matFooterRowDef="['foot-1', 'foot-2', 'foot-3', 'foot-4', 'foot-5']" class="bg-primary"></tr>

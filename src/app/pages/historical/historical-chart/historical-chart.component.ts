@@ -83,4 +83,8 @@ export class HistoricalChartComponent implements OnInit, OnChanges{
     const ctx2 = this.barChartRef.nativeElement.getContext('2d');
     this.barChart = new Chart(ctx2, config as ChartConfiguration);
   }
+
+  get isData() {
+    return this.data && this.data.length > 0;
+  }
 }

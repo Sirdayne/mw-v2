@@ -1,11 +1,11 @@
 <div fxLayoutAlign="start center" class="border-b py-2 px-2" [class.bg-primary]="isPrimary" [class.text-white]="isPrimary">
   <div fxFlex="100%">{{ label }}</div>
   <div fxFlex="100%">
-    <div *ngIf="isPrimary">
+    <div *ngIf="isRate">
       <app-rate-change [rate]="data"></app-rate-change>
     </div>
-    <div *ngIf="!isPrimary">
-      {{ data }}
+    <div *ngIf="!isRate">
+      {{ getData }}
     </div>
   </div>
 </div>

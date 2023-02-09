@@ -9,6 +9,8 @@ import { FormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { DecimalPipe } from '@angular/common';
+import { ImportService } from '../../../shared/import.service';
 
 @Component({
   selector: 'app-repo-historical-data',
@@ -35,7 +37,9 @@ export class RepoHistoricalDataComponent implements OnInit, OnDestroy {
   endDateControl = new FormControl(this.now);
   subscription = new Subscription();
 
-  constructor(private repoHistoricalService: RepoHistoricalService) {
+  constructor(private repoHistoricalService: RepoHistoricalService,
+              private decimalPipe: DecimalPipe,
+              private importService: ImportService) {
   }
 
   ngOnInit(): void {
@@ -65,11 +69,31 @@ export class RepoHistoricalDataComponent implements OnInit, OnDestroy {
     ).subscribe((res: RepoHistoricalDataResponse) => {
       this.data  = new MatTableDataSource(res.tableRows);
       this.data.sort = this.sort;
+      this.setSummary(res);
     })
   }
 
+  setSummary(res) {
+    this.summary.currentPeriodValueSum = res.currentPeriodValueSum;
+    this.summary.currentPeriodVolumeSum = res.currentPeriodVolumeSum;
+  }
+
   isValue(value) {
+    if (value && typeof value === 'number') {
+      return this.decimalPipe.transform(value, '1.' );
+    }
     return value ? value : '-';
+  }
+
+  downloadReport(type) {
+    if ((this.startDateControl && this.startDateControl.value) &&
+      (this.endDateControl && this.endDateControl.value)) {
+      this.repoHistoricalService.downloadHistoricalDataReport(type,
+        DateTime.fromJSDate(this.startDateControl.value).toISODate(),
+        DateTime.fromJSDate(this.endDateControl.value).toISODate()).subscribe(res => {
+        this.importService.saveFile('repoPeriodical', res, type);
+      });
+    }
   }
 
   ngOnDestroy() {

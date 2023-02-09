@@ -167,7 +167,7 @@
       </tr>
       <ng-container matColumnDef="foot-1">
         <th mat-header-cell *matFooterCellDef
-            [attr.colspan]="13"
+            [attr.colspan]="14"
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
@@ -190,7 +190,7 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          {{ summary.dailyVolumeSum }}
+          {{ summary.dailyVolumeSum | number: '1.'   }}
         </th>
       </ng-container>
       <ng-container matColumnDef="foot-4">
@@ -199,7 +199,15 @@
             [attr.rowspan]="1"
             class="mat-foot-row"
         >
-          {{ summary.dailyValueSumUSD }}
+          <div>
+            <div matTooltip="Based on currency rates from National Bank Of Kazakhstan for the day of trade"
+                 aria-label="Based on currency rates from National Bank Of Kazakhstan for the day of trade"
+                 fxFlex="row"
+                 fxLayoutAlign="start center"
+            >
+              {{ summary.dailyValueSumUSD | number: '1.'   }} USD <mat-icon class="mb-1 ml-2 mr-2">info</mat-icon>
+            </div>
+          </div>
         </th>
       </ng-container>
 

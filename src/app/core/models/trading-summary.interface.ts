@@ -12,4 +12,7 @@ export interface TradingSummary {
   priceChange: number;
   totalValue: number;
   totalVolume: number;
+  dailyValue: number;
+  dailyVolume: number;
+  isEtfEtn: boolean;
 }
